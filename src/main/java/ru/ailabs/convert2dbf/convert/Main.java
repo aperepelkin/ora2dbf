@@ -108,16 +108,19 @@ public class Main {
         List<Map<String, Object>> result = run.query(
                 conn, query.toString(), h);
 
-        DbfTable dbfTable = new Table(h.fields);
-        dbfTable.createTable(dbffile);
+        if (result != null) {
 
-        try {
-            for (Map<String, Object> row : result) {
-                dbfTable.recordRow(row);
+            DbfTable dbfTable = new Table(h.fields);
+            dbfTable.createTable(dbffile);
+
+            try {
+                for (Map<String, Object> row : result) {
+                    dbfTable.recordRow(row);
+                }
+            } finally {
+                dbfTable.close();
+                DbUtils.close(conn);
             }
-        } finally {
-            dbfTable.close();
-            DbUtils.close(conn);
         }
     }
 
