@@ -108,8 +108,12 @@ public class Main {
         List<Map<String, Object>> result = run.query(
                 conn, query.toString(), h);
 
-        if (result != null) {
+        if (result != null ) {
 
+            if(h.fields == null) {
+                logger.warn("Empty result set");
+                System.exit(-1);
+            }
             DbfTable dbfTable = new Table(h.fields);
             dbfTable.createTable(dbffile);
 
